@@ -5,8 +5,9 @@ import SignupPage from './components/SignupPage';
 import LoginPage from './components/LoginPage';
 import Dashboard from './components/Dashboard';
 import PrivilegeCard from './components/PrivilegeCard';
-// Same folder-e thaka utils folder ke call korchi
-import { createClient } from './utils/supabase/client'; 
+
+// Thik kora path: '../' mane 'app' folder theke ber hoye 'utils' e jawa
+import { createClient } from '../utils/supabase/client'; 
 
 export default function App() {
   const [user, setUser] = useState<any>(null);
