@@ -1,5 +1,6 @@
 import { createClient as createSupabaseClient } from '@supabase/supabase-js';
-import { projectId, publicAnonKey } from './info';
+// Extension shoho path nishchit korun
+import { projectId, publicAnonKey } from './info.tsx'; 
 
 let supabaseClient: ReturnType<typeof createSupabaseClient> | null = null;
 
