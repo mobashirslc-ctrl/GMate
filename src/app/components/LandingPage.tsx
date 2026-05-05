@@ -107,8 +107,8 @@ export default function LandingPage() {
                 GMate
               </span>
               <br />
-              thakte bahirer<br />
-              khabar keno?
+              Your Campus, Your Community, Your Future<br />
+              All in One Place.
             </h1>
             <p className="text-xl text-gray-600 mb-8">
               The intelligent ecosystem for university students to earn, share, and live safely on campus
