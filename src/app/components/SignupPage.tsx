@@ -52,67 +52,74 @@ export default function SignupPage({ setUser }: SignupPageProps) {
   };
 
   const handleSubmit = async () => {
-    setLoading(true);
-    try {
-      // 1. Signup Request - URL updated to /server
-      const response = await fetch(
-        `https://${projectId}.supabase.co/functions/v1/server/signup`, // <--- URL Fixed
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'apikey': publicAnonKey,
-            'Authorization': `Bearer ${publicAnonKey}`,
-          },
-          body: JSON.stringify(formData),
-        }
-      );
+  setLoading(true);
+  try {
+    // URL define korar somoy nishchit hon jate sheshe ':' na thake
+    const baseUrl = `https://${projectId.trim()}.supabase.co/functions/v1/server`;
 
-      const data = await response.json();
-      if (data.error) throw new Error(data.error);
+    // 1. Signup Request
+    const response = await fetch(`${baseUrl}/signup`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': publicAnonKey,
+        'Authorization': `Bearer ${publicAnonKey}`,
+      },
+      body: JSON.stringify(formData),
+    });
 
-      // 2. Auth SignIn
-      const supabase = createClient();
-      const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
-        email: formData.email,
-        password: formData.password,
+    // Response JSON kina seta age check kora bhalo
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`Server Error (${response.status}): ${errorText}`);
+    }
+
+    const data = await response.json();
+    if (data.error) throw new Error(data.error);
+
+    // 2. Auth SignIn
+    const supabase = createClient();
+    const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
+      email: formData.email,
+      password: formData.password,
+    });
+
+    if (signInError) throw signInError;
+    const accessToken = signInData.session.access_token;
+
+    // 3. Uploads
+    if (idCard) {
+      const idBase64 = await fileToBase64(idCard);
+      await fetch(`${baseUrl}/upload-id-card`, {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json', 
+          'apikey': publicAnonKey,
+          'Authorization': `Bearer ${accessToken}` 
+        },
+        body: JSON.stringify({ file: idBase64, fileName: idCard.name }),
+      });
+    }
+
+    if (faceScan) {
+      const faceBase64 = await fileToBase64(faceScan);
+      await fetch(`${baseUrl}/upload-face-scan`, {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json', 
+          'apikey': publicAnonKey,
+          'Authorization': `Bearer ${accessToken}` 
+        },
+        body: JSON.stringify({ file: faceBase64, fileName: faceScan.name }),
       });
 
-      if (signInError) throw signInError;
-      const accessToken = signInData.session.access_token;
+      setLoading(false);
+      setVerifying(true);
 
-      // 3. Sequential Uploads - URL updated to /server
-      if (idCard) {
-        const idBase64 = await fileToBase64(idCard);
-        await fetch(`https://${projectId}.supabase.co/functions/v1/server/upload-id-card`, { // <--- URL Fixed
-          method: 'POST',
-          headers: { 
-            'Content-Type': 'application/json', 
-            'apikey': publicAnonKey,
-            'Authorization': `Bearer ${accessToken}` 
-          },
-          body: JSON.stringify({ file: idBase64, fileName: idCard.name }),
-        });
-      }
-
-      if (faceScan) {
-        const faceBase64 = await fileToBase64(faceScan);
-        await fetch(`https://${projectId}.supabase.co/functions/v1/server/upload-face-scan`, { // <--- URL Fixed
-          method: 'POST',
-          headers: { 
-            'Content-Type': 'application/json', 
-            'apikey': publicAnonKey,
-            'Authorization': `Bearer ${accessToken}` 
-          },
-          body: JSON.stringify({ file: faceBase64, fileName: faceScan.name }),
-        });
-
-        setLoading(false);
-        setVerifying(true);
-
-        // 4. Verification Logic - URL updated to /server
-        setTimeout(async () => {
-          await fetch(`https://${projectId}.supabase.co/functions/v1/server/verify-student`, { // <--- URL Fixed
+      // 4. Verification
+      setTimeout(async () => {
+        try {
+          await fetch(`${baseUrl}/verify-student`, {
             method: 'POST',
             headers: { 
               'Content-Type': 'application/json', 
@@ -120,22 +127,24 @@ export default function SignupPage({ setUser }: SignupPageProps) {
               'Authorization': `Bearer ${accessToken}` 
             },
           });
-          setVerifying(false);
-          setUser(signInData.user);
-          navigate('/dashboard');
-        }, 3000);
-      } else {
-        setLoading(false);
+        } catch (e) {
+          console.error("Verification call failed", e);
+        }
+        setVerifying(false);
         setUser(signInData.user);
         navigate('/dashboard');
-      }
-    } catch (error: any) {
-      console.error('Error:', error);
-      alert(`Signup failed: ${error.message}`);
+      }, 3000);
+    } else {
       setLoading(false);
+      setUser(signInData.user);
+      navigate('/dashboard');
     }
-  };
-
+  } catch (error: any) {
+    console.error('Error Details:', error);
+    alert(`Signup failed: ${error.message}`);
+    setLoading(false);
+  }
+};
   // UI Code starts here (Step rendering logic remains same)
   if (verifying) {
     return (
