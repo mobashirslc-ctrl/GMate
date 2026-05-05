@@ -207,4 +207,51 @@ export default function SignupPage({ setUser }: SignupPageProps) {
               <input type="text" name="idNo" placeholder="Student ID" onChange={handleInputChange} className="w-full px-4 py-3 border rounded-xl" />
               <select name="bloodGroup" onChange={handleInputChange} className="w-full px-4 py-3 border rounded-xl">
                 <option value="">Select Blood Group</option>
-                {['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'].map(bg => <option key={bg} value={bg}>{bg}</option>
+                {['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'].map(bg => (
+                  <option key={bg} value={bg}>{bg}</option>
+                ))}
+              </select>
+              <input type="text" name="emergencyContact" placeholder="Emergency Contact" onChange={handleInputChange} className="w-full px-4 py-3 border rounded-xl" />
+              <button onClick={() => setStep(3)} className="w-full py-3 bg-orange-500 text-white font-bold rounded-xl">Continue</button>
+            </div>
+          )}
+
+          {step === 3 && (
+            <div className="space-y-6">
+              <h2 className="text-3xl font-bold text-gray-900 mb-2">Verification</h2>
+              
+              <div className="space-y-4">
+                <div 
+                  onClick={() => idCardInputRef.current?.click()}
+                  className={`border-2 border-dashed rounded-2xl p-6 text-center cursor-pointer transition-colors ${idCard ? 'border-green-500 bg-green-50' : 'border-gray-300 hover:border-orange-500'}`}
+                >
+                  <input type="file" ref={idCardInputRef} onChange={handleIDCardUpload} className="hidden" accept="image/*" />
+                  <Upload className={`size-8 mx-auto mb-2 ${idCard ? 'text-green-500' : 'text-gray-400'}`} />
+                  <p className="font-medium">{idCard ? idCard.name : 'Upload Student ID Card'}</p>
+                </div>
+
+                <div 
+                  onClick={() => faceScanInputRef.current?.click()}
+                  className={`border-2 border-dashed rounded-2xl p-6 text-center cursor-pointer transition-colors ${faceScan ? 'border-green-500 bg-green-50' : 'border-gray-300 hover:border-orange-500'}`}
+                >
+                  <input type="file" ref={faceScanInputRef} onChange={handleFaceScanUpload} className="hidden" accept="image/*" />
+                  <Camera className={`size-8 mx-auto mb-2 ${faceScan ? 'text-green-500' : 'text-gray-400'}`} />
+                  <p className="font-medium">{faceScan ? faceScan.name : 'Take Face Scan'}</p>
+                </div>
+              </div>
+
+              <button 
+                onClick={handleSubmit} 
+                disabled={loading || !idCard || !faceScan}
+                className="w-full py-4 bg-gradient-to-r from-orange-500 to-yellow-500 text-white font-bold rounded-xl shadow-lg hover:shadow-orange-200 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+              >
+                {loading && <Loader2 className="size-5 animate-spin" />}
+                {loading ? 'Processing...' : 'Complete Signup'}
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
