@@ -1,12 +1,10 @@
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import LandingPage from './components/LandingPage';
 import SignupPage from './components/SignupPage';
 import LoginPage from './components/LoginPage';
 import Dashboard from './components/Dashboard';
 import PrivilegeCard from './components/PrivilegeCard';
-
-// Thik kora path: '../' mane 'app' folder theke ber hoye 'utils' e jawa
 import { createClient } from '../utils/supabase/client'; 
 
 export default function App() {
@@ -15,18 +13,13 @@ export default function App() {
 
   useEffect(() => {
     const supabase = createClient();
-
-    // Check for existing session
     supabase.auth.getSession().then(({ data: { session } }) => {
       setUser(session?.user ?? null);
       setLoading(false);
     });
-
-    // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null);
     });
-
     return () => subscription.unsubscribe();
   }, []);
 
@@ -39,26 +32,27 @@ export default function App() {
   }
 
   return (
-    <Routes>
-      <Route path="/" element={<LandingPage />} />
-      <Route 
-        path="/signup" 
-        element={user ? <Navigate to="/dashboard" /> : <SignupPage setUser={setUser} />} 
-      />
-      <Route 
-        path="/login" 
-        element={user ? <Navigate to="/dashboard" /> : <LoginPage setUser={setUser} />} 
-      />
-      <Route 
-        path="/dashboard" 
-        element={user ? <Dashboard user={user} setUser={setUser} /> : <Navigate to="/login" />} 
-      />
-      <Route 
-        path="/privilege-card" 
-        element={user ? <PrivilegeCard user={user} /> : <Navigate to="/login" />} 
-      />
-      {/* Kono route match na korle Redirect */}
-      <Route path="*" element={<Navigate to="/" />} />
-    </Routes>
+    <BrowserRouter> {/* Safe thakar jonno eikhane wrap kora hochche */}
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route 
+          path="/signup" 
+          element={user ? <Navigate to="/dashboard" /> : <SignupPage setUser={setUser} />} 
+        />
+        <Route 
+          path="/login" 
+          element={user ? <Navigate to="/dashboard" /> : <LoginPage setUser={setUser} />} 
+        />
+        <Route 
+          path="/dashboard" 
+          element={user ? <Dashboard user={user} setUser={setUser} /> : <Navigate to="/login" />} 
+        />
+        <Route 
+          path="/privilege-card" 
+          element={user ? <PrivilegeCard user={user} /> : <Navigate to="/login" />} 
+        />
+        <Route path="*" element={<Navigate to="/" />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
