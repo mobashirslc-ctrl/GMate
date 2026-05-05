@@ -54,14 +54,14 @@ export default function SignupPage({ setUser }: SignupPageProps) {
   const handleSubmit = async () => {
     setLoading(true);
     try {
-      // 1. Signup Request - apikey header added here
+      // 1. Signup Request - URL updated to /server
       const response = await fetch(
-        `https://${projectId}.supabase.co/functions/v1/make-server-9a414d17/signup`,
+        `https://${projectId}.supabase.co/functions/v1/server/signup`, // <--- URL Fixed
         {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'apikey': publicAnonKey, // FIX: CORS ebong Authorization-er jonno proyojon
+            'apikey': publicAnonKey,
             'Authorization': `Bearer ${publicAnonKey}`,
           },
           body: JSON.stringify(formData),
@@ -81,10 +81,10 @@ export default function SignupPage({ setUser }: SignupPageProps) {
       if (signInError) throw signInError;
       const accessToken = signInData.session.access_token;
 
-      // 3. Sequential Uploads - Headers updated with apikey
+      // 3. Sequential Uploads - URL updated to /server
       if (idCard) {
         const idBase64 = await fileToBase64(idCard);
-        await fetch(`https://${projectId}.supabase.co/functions/v1/make-server-9a414d17/upload-id-card`, {
+        await fetch(`https://${projectId}.supabase.co/functions/v1/server/upload-id-card`, { // <--- URL Fixed
           method: 'POST',
           headers: { 
             'Content-Type': 'application/json', 
@@ -97,7 +97,7 @@ export default function SignupPage({ setUser }: SignupPageProps) {
 
       if (faceScan) {
         const faceBase64 = await fileToBase64(faceScan);
-        await fetch(`https://${projectId}.supabase.co/functions/v1/make-server-9a414d17/upload-face-scan`, {
+        await fetch(`https://${projectId}.supabase.co/functions/v1/server/upload-face-scan`, { // <--- URL Fixed
           method: 'POST',
           headers: { 
             'Content-Type': 'application/json', 
@@ -110,9 +110,9 @@ export default function SignupPage({ setUser }: SignupPageProps) {
         setLoading(false);
         setVerifying(true);
 
-        // 4. Verification Logic
+        // 4. Verification Logic - URL updated to /server
         setTimeout(async () => {
-          await fetch(`https://${projectId}.supabase.co/functions/v1/make-server-9a414d17/verify-student`, {
+          await fetch(`https://${projectId}.supabase.co/functions/v1/server/verify-student`, { // <--- URL Fixed
             method: 'POST',
             headers: { 
               'Content-Type': 'application/json', 
