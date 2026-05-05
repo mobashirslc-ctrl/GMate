@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { GraduationCap, Upload, Camera, CheckCircle2, Loader2 } from 'lucide-react';
 import { createClient } from '../../utils/supabase/client';
 // Path re-check: Root-er utils hole ../../../ use korun
-import { projectId, publicAnonKey } from '../../../utils/supabase/info'; 
+import { projectId, publicAnonKey } from '../../utils/supabase/info'; 
 
 interface SignupPageProps {
   setUser: (user: any) => void;
