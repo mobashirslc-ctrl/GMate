@@ -2,7 +2,6 @@ import { useState, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { GraduationCap, Upload, Camera, CheckCircle2, Loader2 } from 'lucide-react';
 import { createClient } from '../../utils/supabase/client';
-// Path re-check: Root-er utils hole ../../../ use korun
 import { projectId, publicAnonKey } from '../../utils/supabase/info'; 
 
 interface SignupPageProps {
@@ -43,7 +42,6 @@ export default function SignupPage({ setUser }: SignupPageProps) {
     if (e.target.files && e.target.files[0]) setFaceScan(e.target.files[0]);
   };
 
-  // Helper function for Base64 conversion
   const fileToBase64 = (file: File): Promise<string> => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -56,14 +54,15 @@ export default function SignupPage({ setUser }: SignupPageProps) {
   const handleSubmit = async () => {
     setLoading(true);
     try {
-      // 1. Signup Request
+      // 1. Signup Request - apikey header added here
       const response = await fetch(
         `https://${projectId}.supabase.co/functions/v1/make-server-9a414d17/signup`,
         {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${publicAnonKey}`,
+            'apikey': publicAnonKey, // FIX: CORS ebong Authorization-er jonno proyojon
+            'Authorization': `Bearer ${publicAnonKey}`,
           },
           body: JSON.stringify(formData),
         }
@@ -82,12 +81,16 @@ export default function SignupPage({ setUser }: SignupPageProps) {
       if (signInError) throw signInError;
       const accessToken = signInData.session.access_token;
 
-      // 3. Sequential Uploads
+      // 3. Sequential Uploads - Headers updated with apikey
       if (idCard) {
         const idBase64 = await fileToBase64(idCard);
         await fetch(`https://${projectId}.supabase.co/functions/v1/make-server-9a414d17/upload-id-card`, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${accessToken}` },
+          headers: { 
+            'Content-Type': 'application/json', 
+            'apikey': publicAnonKey,
+            'Authorization': `Bearer ${accessToken}` 
+          },
           body: JSON.stringify({ file: idBase64, fileName: idCard.name }),
         });
       }
@@ -96,7 +99,11 @@ export default function SignupPage({ setUser }: SignupPageProps) {
         const faceBase64 = await fileToBase64(faceScan);
         await fetch(`https://${projectId}.supabase.co/functions/v1/make-server-9a414d17/upload-face-scan`, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${accessToken}` },
+          headers: { 
+            'Content-Type': 'application/json', 
+            'apikey': publicAnonKey,
+            'Authorization': `Bearer ${accessToken}` 
+          },
           body: JSON.stringify({ file: faceBase64, fileName: faceScan.name }),
         });
 
@@ -107,7 +114,11 @@ export default function SignupPage({ setUser }: SignupPageProps) {
         setTimeout(async () => {
           await fetch(`https://${projectId}.supabase.co/functions/v1/make-server-9a414d17/verify-student`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${accessToken}` },
+            headers: { 
+              'Content-Type': 'application/json', 
+              'apikey': publicAnonKey,
+              'Authorization': `Bearer ${accessToken}` 
+            },
           });
           setVerifying(false);
           setUser(signInData.user);
@@ -125,6 +136,7 @@ export default function SignupPage({ setUser }: SignupPageProps) {
     }
   };
 
+  // UI Code starts here (Step rendering logic remains same)
   if (verifying) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-orange-50 to-yellow-50 flex items-center justify-center">
