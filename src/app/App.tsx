@@ -5,7 +5,8 @@ import SignupPage from './components/SignupPage';
 import LoginPage from './components/LoginPage';
 import Dashboard from './components/Dashboard';
 import PrivilegeCard from './components/PrivilegeCard';
-import { createClient } from './utils/supabase/client'; // Path check kore niben (image_100f5f.png onujayi)
+// Same folder-e thaka utils folder ke call korchi
+import { createClient } from './utils/supabase/client'; 
 
 export default function App() {
   const [user, setUser] = useState<any>(null);

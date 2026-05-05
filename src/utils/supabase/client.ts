@@ -1,5 +1,5 @@
 import { createClient as createSupabaseClient } from '@supabase/supabase-js';
-// Extension shoho path nishchit korun
+// .tsx extension ti mention kora dorkar jate Vite confuse na hoy
 import { projectId, publicAnonKey } from './info.tsx'; 
 
 let supabaseClient: ReturnType<typeof createSupabaseClient> | null = null;
