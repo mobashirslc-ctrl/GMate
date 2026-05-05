@@ -26,14 +26,16 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
-  // Build configuration add kora hoyeche jate Vercel dist folder puye pay
   build: {
     outDir: 'dist',
     emptyOutDir: true,
     sourcemap: false,
     rollupOptions: {
       output: {
-        manualChunks: undefined,
+        // Purono hashed file name force refresh korar jonno:
+        entryFileNames: `assets/[name]-[hash]-${Date.now()}.js`,
+        chunkFileNames: `assets/[name]-[hash].js`,
+        assetFileNames: `assets/[name]-[hash].[ext]`
       },
     },
   },
