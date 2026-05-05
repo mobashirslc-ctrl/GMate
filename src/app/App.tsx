@@ -1,3 +1,4 @@
+// src/app/App.tsx
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import LandingPage from './components/LandingPage';
@@ -23,36 +24,35 @@ export default function App() {
     return () => subscription.unsubscribe();
   }, []);
 
-  if (loading) {
-    return (
-      <div className="min-h-screen w-full flex items-center justify-center bg-gradient-to-br from-orange-50 to-yellow-50">
-        <div className="text-2xl font-bold text-orange-600 animate-pulse">Loading GMate...</div>
-      </div>
-    );
-  }
-
+  // LOADING OBOSTHAYO BROWSERROUTER-ER BHETOREI THAKTE HOBE
   return (
-    <BrowserRouter> {/* Safe thakar jonno eikhane wrap kora hochche */}
-      <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route 
-          path="/signup" 
-          element={user ? <Navigate to="/dashboard" /> : <SignupPage setUser={setUser} />} 
-        />
-        <Route 
-          path="/login" 
-          element={user ? <Navigate to="/dashboard" /> : <LoginPage setUser={setUser} />} 
-        />
-        <Route 
-          path="/dashboard" 
-          element={user ? <Dashboard user={user} setUser={setUser} /> : <Navigate to="/login" />} 
-        />
-        <Route 
-          path="/privilege-card" 
-          element={user ? <PrivilegeCard user={user} /> : <Navigate to="/login" />} 
-        />
-        <Route path="*" element={<Navigate to="/" />} />
-      </Routes>
+    <BrowserRouter>
+      {loading ? (
+        <div className="min-h-screen w-full flex items-center justify-center bg-gradient-to-br from-orange-50 to-yellow-50">
+          <div className="text-2xl font-bold text-orange-600 animate-pulse">Loading GMate...</div>
+        </div>
+      ) : (
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route 
+            path="/signup" 
+            element={user ? <Navigate to="/dashboard" /> : <SignupPage setUser={setUser} />} 
+          />
+          <Route 
+            path="/login" 
+            element={user ? <Navigate to="/dashboard" /> : <LoginPage setUser={setUser} />} 
+          />
+          <Route 
+            path="/dashboard" 
+            element={user ? <Dashboard user={user} setUser={setUser} /> : <Navigate to="/login" />} 
+          />
+          <Route 
+            path="/privilege-card" 
+            element={user ? <PrivilegeCard user={user} /> : <Navigate to="/login" />} 
+          />
+          <Route path="*" element={<Navigate to="/" />} />
+        </Routes>
+      )}
     </BrowserRouter>
   );
 }
