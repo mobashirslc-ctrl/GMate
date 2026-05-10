@@ -132,7 +132,7 @@ export default function LandingPage() {
 
             <div className="flex gap-8">
               <div>
-                <div className="text-3xl font-bold text-gray-900">200+</div>
+                <div className="text-3xl font-bold text-gray-900">10+</div>
                 <div className="text-gray-600">Universities</div>
               </div>
               <div>
