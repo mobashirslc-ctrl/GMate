@@ -6,7 +6,8 @@ import SignupPage from './components/SignupPage';
 import LoginPage from './components/LoginPage';
 import Dashboard from './components/Dashboard';
 import PrivilegeCard from './components/PrivilegeCard';
-import CampusFounderForm from './components/CampusFounderForm'; // Notun Component
+import CampusFounderForm from './components/CampusFounderForm';
+import FounderDashboard from './components/FounderDashboard'; // Notun Import
 import { createClient } from '../utils/supabase/client'; 
 
 export default function App() {
@@ -15,13 +16,18 @@ export default function App() {
 
   useEffect(() => {
     const supabase = createClient();
+    
+    // Initial session check
     supabase.auth.getSession().then(({ data: { session } }) => {
       setUser(session?.user ?? null);
       setLoading(false);
     });
+
+    // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null);
     });
+
     return () => subscription.unsubscribe();
   }, []);
 
@@ -33,11 +39,11 @@ export default function App() {
         </div>
       ) : (
         <Routes>
+          {/* Public Routes */}
           <Route path="/" element={<LandingPage />} />
-          
-          {/* CAMPUS FOUNDER REGISTRATION ROUTE */}
           <Route path="/join-founder" element={<CampusFounderForm />} />
 
+          {/* Auth Routes */}
           <Route 
             path="/signup" 
             element={user ? <Navigate to="/dashboard" /> : <SignupPage setUser={setUser} />} 
@@ -46,14 +52,25 @@ export default function App() {
             path="/login" 
             element={user ? <Navigate to="/dashboard" /> : <LoginPage setUser={setUser} />} 
           />
+
+          {/* Regular Student Dashboard */}
           <Route 
             path="/dashboard" 
             element={user ? <Dashboard user={user} setUser={setUser} /> : <Navigate to="/login" />} 
           />
+
+          {/* CAMPUS FOUNDER DASHBOARD ROUTE */}
+          <Route 
+            path="/founder-dashboard" 
+            element={user ? <FounderDashboard /> : <Navigate to="/login" />} 
+          />
+
           <Route 
             path="/privilege-card" 
             element={user ? <PrivilegeCard user={user} /> : <Navigate to="/login" />} 
           />
+
+          {/* Fallback Route */}
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       )}
