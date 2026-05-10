@@ -206,7 +206,7 @@ export default function LandingPage() {
                 to="/join-founder"
                 className="inline-block px-8 py-4 bg-white text-orange-600 font-bold rounded-full hover:bg-orange-50 transition shadow-lg text-lg"
               >
-                Apply for 100 Founders Program
+                Apply for Campus Founders Program
               </Link>
             </div>
             <div className="hidden lg:flex justify-end">
