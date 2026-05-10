@@ -7,6 +7,12 @@ import { projectId, publicAnonKey } from '../../utils/supabase/info';
 interface SignupPageProps {
   setUser: (user: any) => void;
 }
+const UNIVERSITY_FOUNDER_MAP: Record<string, string> = {
+  "North South University": "NSU-F001",
+  "Dhaka University": "DU-F002",
+  "AIUB": "AIUB-F003",
+  "BRAC University": "BRAC-F004",
+};
 
 export default function SignupPage({ setUser }: SignupPageProps) {
   const navigate = useNavigate();
@@ -54,6 +60,12 @@ export default function SignupPage({ setUser }: SignupPageProps) {
   const handleSubmit = async () => {
   setLoading(true);
   try {
+    const founderReferralId = UNIVERSITY_FOUNDER_MAP[formData.universityName] || 'GENERIC-SYSTEM';
+    
+    const payload = {
+      ...formData,
+      referralId: founderReferralId // Backend e ei ID ta auto chole jabe
+    };
     // URL define korar somoy nishchit hon jate sheshe ':' na thake
     const baseUrl = `https://${projectId.trim()}.supabase.co/functions/v1/server`;
 

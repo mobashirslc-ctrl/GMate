@@ -67,34 +67,43 @@ export default function LandingPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 via-yellow-50 to-amber-50">
-      {/* Header */}
-      <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-orange-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="size-10 bg-gradient-to-br from-orange-500 to-yellow-500 rounded-full flex items-center justify-center">
-              <GraduationCap className="size-6 text-white" />
-            </div>
-            <span className="text-2xl font-bold bg-gradient-to-r from-orange-600 to-yellow-600 bg-clip-text text-transparent">
-              GMate
-            </span>
-          </div>
-          <div className="flex gap-3">
-            <Link
-              to="/login"
-              className="px-6 py-2 text-orange-600 font-medium hover:bg-orange-50 rounded-full transition"
-            >
-              Log In
-            </Link>
-            <Link
-              to="/signup"
-              className="px-6 py-2 bg-gradient-to-r from-orange-500 to-yellow-500 text-white font-medium rounded-full hover:shadow-lg transition"
-            >
-              Sign Up
-            </Link>
-          </div>
-        </div>
-      </header>
+     {/* Header */}
+<header className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-orange-100">
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
+    <div className="flex items-center gap-2">
+      <div className="size-10 bg-gradient-to-br from-orange-500 to-yellow-500 rounded-full flex items-center justify-center">
+        <GraduationCap className="size-6 text-white" />
+      </div>
+      <span className="text-2xl font-bold bg-gradient-to-r from-orange-600 to-yellow-600 bg-clip-text text-transparent">
+        GMate
+      </span>
+    </div>
+    
+    <div className="flex items-center gap-3"> {/* gap-3 thakbe */}
+      
+      {/* NOTUN FOUNDERS LINK EKHANE BOSHECHE */}
+      <Link
+        to="/founder-dashboard"
+        className="hidden md:block px-4 py-2 text-gray-600 font-medium hover:text-orange-600 transition"
+      >
+        Founders
+      </Link>
 
+      <Link
+        to="/login"
+        className="px-6 py-2 text-orange-600 font-medium hover:bg-orange-50 rounded-full transition"
+      >
+        Log In
+      </Link>
+      <Link
+        to="/signup"
+        className="px-6 py-2 bg-gradient-to-r from-orange-500 to-yellow-500 text-white font-medium rounded-full hover:shadow-lg transition"
+      >
+        Sign Up
+      </Link>
+    </div>
+  </div>
+</header>
       {/* Hero Section */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
