@@ -194,14 +194,13 @@ export default function LandingPage() {
           <div className="relative z-10 grid lg:grid-cols-2 gap-8 items-center">
             <div>
               <div className="inline-block px-4 py-1 bg-white/20 backdrop-blur-md text-white rounded-full text-sm font-medium mb-4">
-                🚀 100 Entrepreneurs Program
+                🚀 Entrepreneurs Program
               </div>
               <h2 className="text-3xl lg:text-4xl font-bold mb-6">
                 Become a Campus Founder & Lead Your University
               </h2>
               <p className="text-white/90 text-lg mb-8 leading-relaxed">
-                Amra apnake dibo ready-made technology, G-Tech-er expert training, ebong exclusive revenue share. 
-                Apni hobe apnar university-r official GMate leader.
+                We provide you with ready-made technology, expert training from G-Tech, and an exclusive revenue share. Become the official GMate leader of your university.
               </p>
               <Link
                 to="/join-founder"
