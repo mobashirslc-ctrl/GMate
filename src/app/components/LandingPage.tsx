@@ -1,4 +1,4 @@
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import { GraduationCap, ShoppingBag, Utensils, Briefcase, Users, Shield, Heart, Ticket, Home, Gift } from 'lucide-react';
 
 export default function LandingPage() {
@@ -113,17 +113,23 @@ export default function LandingPage() {
             <p className="text-xl text-gray-600 mb-8">
               The intelligent ecosystem for university students to earn, share, and live safely on campus
             </p>
-            <div className="flex gap-4 mb-8">
+            
+            {/* HERO BUTTONS UPDATED AND FIXED */}
+            <div className="flex flex-wrap gap-4 mb-8">
               <Link
                 to="/signup"
                 className="px-8 py-4 bg-gradient-to-r from-orange-500 to-yellow-500 text-white font-bold rounded-full hover:shadow-xl transition text-lg"
               >
                 Get Started
               </Link>
-              <button className="px-8 py-4 border-2 border-orange-500 text-orange-600 font-bold rounded-full hover:bg-orange-50 transition text-lg">
-                Learn More
-              </button>
+              <Link
+                to="/join-founder"
+                className="px-8 py-4 border-2 border-orange-500 text-orange-600 font-bold rounded-full hover:bg-orange-50 transition text-lg text-center"
+              >
+                Join as Campus Founder
+              </Link>
             </div>
+
             <div className="flex gap-8">
               <div>
                 <div className="text-3xl font-bold text-gray-900">200+</div>
@@ -182,6 +188,42 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* CAMPUS FOUNDER PROGRAM SECTION */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <div className="bg-gradient-to-r from-orange-600 to-amber-600 rounded-3xl p-8 lg:p-12 text-white shadow-2xl relative overflow-hidden">
+          <div className="relative z-10 grid lg:grid-cols-2 gap-8 items-center">
+            <div>
+              <div className="inline-block px-4 py-1 bg-white/20 backdrop-blur-md text-white rounded-full text-sm font-medium mb-4">
+                🚀 100 Entrepreneurs Program
+              </div>
+              <h2 className="text-3xl lg:text-4xl font-bold mb-6">
+                Become a Campus Founder & Lead Your University
+              </h2>
+              <p className="text-white/90 text-lg mb-8 leading-relaxed">
+                Amra apnake dibo ready-made technology, G-Tech-er expert training, ebong exclusive revenue share. 
+                Apni hobe apnar university-r official GMate leader.
+              </p>
+              <Link
+                to="/join-founder"
+                className="inline-block px-8 py-4 bg-white text-orange-600 font-bold rounded-full hover:bg-orange-50 transition shadow-lg text-lg"
+              >
+                Apply for 100 Founders Program
+              </Link>
+            </div>
+            <div className="hidden lg:flex justify-end">
+               <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20">
+                  <ul className="space-y-4 text-lg">
+                    <li className="flex gap-3 items-center font-medium">✅ Zero Infrastructure Cost</li>
+                    <li className="flex gap-3 items-center font-medium">✅ Exclusive Revenue Share</li>
+                    <li className="flex gap-3 items-center font-medium">✅ G-Tech Leadership Training</li>
+                    <li className="flex gap-3 items-center font-medium">✅ Official Founder Badge</li>
+                  </ul>
+               </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* How It Works */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <div className="text-center mb-16">
@@ -213,17 +255,29 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* CTA Section */}
+      {/* CTA SECTION UPDATED WITH FOUNDER OPTION */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <div className="bg-gradient-to-r from-orange-500 to-yellow-500 rounded-3xl p-12 text-center shadow-2xl">
           <h2 className="text-4xl font-bold text-white mb-4">Ready to Join GMate?</h2>
-          <p className="text-xl text-white/90 mb-8">Join 50,000+ students building a self-sustaining campus ecosystem</p>
-          <Link
-            to="/signup"
-            className="inline-block px-10 py-4 bg-white text-orange-600 font-bold rounded-full hover:shadow-xl transition text-lg"
-          >
-            Create Your Account
-          </Link>
+          <p className="text-xl text-white/90 mb-10">Join 50,000+ students building a self-sustaining campus ecosystem</p>
+          
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <Link
+              to="/signup"
+              className="px-10 py-4 bg-white text-orange-600 font-bold rounded-full hover:shadow-xl transition text-lg w-full sm:w-auto"
+            >
+              Create Your Account
+            </Link>
+            
+            <span className="text-white font-medium">OR</span>
+
+            <Link
+              to="/join-founder"
+              className="px-10 py-4 bg-orange-700/20 backdrop-blur-sm border-2 border-white text-white font-bold rounded-full hover:bg-white hover:text-orange-600 transition text-lg w-full sm:w-auto"
+            >
+              Apply as Founder
+            </Link>
+          </div>
         </div>
       </section>
 

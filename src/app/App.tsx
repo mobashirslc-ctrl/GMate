@@ -6,6 +6,7 @@ import SignupPage from './components/SignupPage';
 import LoginPage from './components/LoginPage';
 import Dashboard from './components/Dashboard';
 import PrivilegeCard from './components/PrivilegeCard';
+import CampusFounderForm from './components/CampusFounderForm'; // Notun Component
 import { createClient } from '../utils/supabase/client'; 
 
 export default function App() {
@@ -24,7 +25,6 @@ export default function App() {
     return () => subscription.unsubscribe();
   }, []);
 
-  // LOADING OBOSTHAYO BROWSERROUTER-ER BHETOREI THAKTE HOBE
   return (
     <BrowserRouter>
       {loading ? (
@@ -34,6 +34,10 @@ export default function App() {
       ) : (
         <Routes>
           <Route path="/" element={<LandingPage />} />
+          
+          {/* CAMPUS FOUNDER REGISTRATION ROUTE */}
+          <Route path="/join-founder" element={<CampusFounderForm />} />
+
           <Route 
             path="/signup" 
             element={user ? <Navigate to="/dashboard" /> : <SignupPage setUser={setUser} />} 
